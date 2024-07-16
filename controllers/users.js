@@ -9,17 +9,20 @@ const SALT_LENGTH = 12;
 
 router.post('/signup', async (req, res) => {
     try {
-        // Check if the username is already taken
         const userInDatabase = await User.findOne({ username: req.body.username });
         if (userInDatabase) {
             return res.json({error: 'Username already taken.'});
         }
-        // Create a new user with hashed password
+        const employeeId = req.body.employeeId.toString();
+        // Determine role based on employeeId
+        const role = employeeId.startsWith('000') ? 'admin' : 'user';
         const user = await User.create({
             username: req.body.username,
-            hashedPassword: bcrypt.hashSync(req.body.password, SALT_LENGTH)
+            hashedPassword: bcrypt.hashSync(req.body.password, SALT_LENGTH),
+            role: role,
+            employeeId: employeeId
         })
-        const token = jwt.sign({ username: user.username, _id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ username: user.username, _id: user._id, role: user.role }, process.env.JWT_SECRET);
         res.status(201).json({ user, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
