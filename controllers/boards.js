@@ -11,20 +11,31 @@ router.use(verifyToken);
 // create new board
 router.post('/', async (req, res) => {
     try {
-        const board = await Board.create({
-            boardName: req.body.boardName
-        })
+        req.body.owner = req.user._id
+        const board = await Board.create(req.body);
+        board._doc.owner = req.user
         res.status(201).json({ board });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+
+
+    // try {
+    //     const board = await Board.create({
+    //         boardName: req.body.boardName,
+    //         owner: req.user._id 
+    //     })
+    //     res.status(201).json({ board });
+    // } catch (error) {
+    //     res.status(500).json({ error: error.message });
+    // }
 }
 )
 
 // get all boards
 router.get('/', async (req, res) => {
     try {
-        const boards = await Board.find();
+        const boards = await Board.find().populate('owner');
         res.status(200).json({ boards });
     } catch (error) {
         res.status(500).json({ error: error.message });
