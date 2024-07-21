@@ -1,3 +1,5 @@
+// controllers/boards.js
+
 const express = require('express');
 const router = express.Router();
 const Board = require('../models/board');
@@ -95,6 +97,7 @@ router.post('/:boardId/tasks', async (req, res) => {
             res.status(404)
             throw new Error('Board not found.');
         }
+
         const task = {
             taskName: req.body.taskName,
             description: req.body.description,
@@ -108,6 +111,7 @@ router.post('/:boardId/tasks', async (req, res) => {
         await board.save();
         res.status(201).json({ task });
     } catch (error) {
+        console.error(error, 'Error creating task');
         if (res.statusCode === 404) {
             res.status(404).json({ error: error.message });
         } else {
