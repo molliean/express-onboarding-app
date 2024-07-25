@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
         req.body.owner = req.user._id
         const board = await Board.create(req.body);
         board._doc.owner = req.user
-        res.status(201).json({ board });
+        res.status(201).json(board);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const boards = await Board.find().populate('owner');
-        res.status(200).json({ boards });
+        res.status(200).json(boards);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -51,7 +51,7 @@ router.get('/:boardId', async (req, res) => {
             res.status(404)
             throw new Error('Board not found.');
         }
-        res.status(200).json({ board });
+        res.status(200).json(board);
     } catch (error) {
         if (res.statusCode === 404) {
             res.status(404).json({ error: error.message });
@@ -70,7 +70,7 @@ router.put('/:boardId', async (req, res) => {
             res.status(404)
             throw new Error('Board not found.');
         }
-        res.status(200).json({ board });
+        res.status(200).json(board);
     } catch (error) {
         if (res.statusCode === 404) {
             res.status(404).json({ error: error.message });
@@ -89,7 +89,7 @@ router.delete('/:boardId', async (req, res) => {
             res.status(404)
             throw new Error('Board not found.');
         }
-        res.status(200).json({ board });
+        res.status(200).json(board);
     } catch (error) {
         if (res.statusCode === 404) {
             res.status(404).json({ error: error.message });
@@ -120,7 +120,7 @@ router.post('/:boardId/tasks', async (req, res) => {
         console.log('Request Body:', req.body);
         board.tasks.push(task);
         await board.save();
-        res.status(201).json({ task });
+        res.status(201).json(task);
     } catch (error) {
         console.error(error, 'Error creating task');
         if (res.statusCode === 404) {
@@ -140,7 +140,7 @@ router.get('/:boardId/tasks', async (req, res) => {
             res.status(404)
             throw new Error('Board not found.');
         }
-        res.status(200).json({ tasks: board.tasks });
+        res.status(200).json(board.tasks);
     } catch (error) {
         if (res.statusCode === 404) {
             res.status(404).json({ error: error.message });
@@ -164,7 +164,7 @@ router.get('/:boardId/tasks/:taskId', async (req, res) => {
             res.status(404)
             throw new Error('Task not found.');
         }
-        res.status(200).json({ task });
+        res.status(200).json(task);
     } catch (error) {
         if (res.statusCode === 404) {
             res.status(404).json({ error: error.message });
@@ -190,7 +190,7 @@ router.put('/:boardId/tasks/:taskId', async (req, res) => {
         }
         task.set(req.body);
         await board.save();
-        res.status(200).json({ task });
+        res.status(200).json(task);
     } catch (error) {
         if (res.statusCode === 404) {
             res.status(404).json({ error: error.message });
@@ -216,7 +216,7 @@ router.delete('/:boardId/tasks/:taskId', async (req, res) => {
         }
         board.tasks.pull({ _id: req.params.taskId });
         await board.save();
-        res.status(200).json({ task });
+        res.status(200).json(task);
     } catch (error) {
         if (res.statusCode === 404) {
             res.status(404).json({ error: error.message });
@@ -242,7 +242,7 @@ router.post('/:boardId/tasks/:taskId/comments', async (req, res) => {
         }
         task.comments.push(req.body);
         await board.save();
-        res.status(200).json({ task });
+        res.status(200).json(task);
     } catch (error) {
         if (res.statusCode === 404) {
             res.status(404).json({ error: error.message });
