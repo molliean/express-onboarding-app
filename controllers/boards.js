@@ -18,17 +18,6 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-
-
-    // try {
-    //     const board = await Board.create({
-    //         boardName: req.body.boardName,
-    //         owner: req.user._id 
-    //     })
-    //     res.status(201).json({ board });
-    // } catch (error) {
-    //     res.status(500).json({ error: error.message });
-    // }
 }
 )
 
@@ -140,6 +129,7 @@ router.get('/:boardId/tasks', async (req, res) => {
             res.status(404)
             throw new Error('Board not found.');
         }
+        console.log(board, '<--in show function')
         res.status(200).json(board.tasks);
     } catch (error) {
         if (res.statusCode === 404) {
@@ -190,6 +180,8 @@ router.put('/:boardId/tasks/:taskId', async (req, res) => {
         }
         task.set(req.body);
         await board.save();
+        console.log(board, '<--board')
+        console.log(task, '<--task')
         res.status(200).json(task);
     } catch (error) {
         if (res.statusCode === 404) {
