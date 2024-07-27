@@ -40,6 +40,7 @@ router.get('/:boardId', async (req, res) => {
             res.status(404)
             throw new Error('Board not found.');
         }
+        console.log(board, '<--in first show function')
         res.status(200).json(board);
     } catch (error) {
         if (res.statusCode === 404) {
@@ -50,6 +51,26 @@ router.get('/:boardId', async (req, res) => {
     }
 }
 )
+
+// get all tasks for board
+// router.get('/:boardId/tasks', async (req, res) => {
+//     try {
+//         const board = await Board.findById(req.params.boardId);
+//         if (!board) {
+//             res.status(404)
+//             throw new Error('Board not found.');
+//         }
+//         console.log(board, '<--in second show function')
+//         res.status(200).json(board.tasks);
+//     } catch (error) {
+//         if (res.statusCode === 404) {
+//             res.status(404).json({ error: error.message });
+//         } else {
+//             res.status(500).json({ error: error.message });
+//         }
+//     }
+// }
+// )
 
 // update board
 router.put('/:boardId', async (req, res) => {
@@ -121,25 +142,7 @@ router.post('/:boardId/tasks', async (req, res) => {
 }
 )
 
-// get all tasks for board
-router.get('/:boardId/tasks', async (req, res) => {
-    try {
-        const board = await Board.findById(req.params.boardId);
-        if (!board) {
-            res.status(404)
-            throw new Error('Board not found.');
-        }
-        console.log(board, '<--in show function')
-        res.status(200).json(board.tasks);
-    } catch (error) {
-        if (res.statusCode === 404) {
-            res.status(404).json({ error: error.message });
-        } else {
-            res.status(500).json({ error: error.message });
-        }
-    }
-}
-)
+
 
 // view task by id
 router.get('/:boardId/tasks/:taskId', async (req, res) => {
