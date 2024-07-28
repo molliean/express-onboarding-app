@@ -1,4 +1,4 @@
-# Company Onboarding App
+# Onboarding Buddy
 
 ![screenshot of app](public/images/Screenshot%202024-07-26%20at%205.16.53 PM.png)
 
